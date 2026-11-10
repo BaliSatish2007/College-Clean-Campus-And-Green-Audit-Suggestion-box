@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clean Campus & Green Audit Suggestion Box | LPU</title>
+  <meta name="description" content="Report campus cleanliness issues and share and upvote green ideas at LPU.">
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+/* =========================================================
+   Clean Campus & Green Audit Suggestion Box - styles
+   Mobile-first. Breakpoints: 640px (tablet), 960px (desktop)
+   ========================================================= */
+
+/* ---------- Design tokens ---------- */
+:root {
+  --green-900: #14532d;
+  --green-700: #15803d;
+  --green-600: #16a34a;
+  --green-200: #bbf7d0;
+  --green-100: #dcfce7;
+  --green-50:  #f0fdf4;
+
+  --ink:       #1f2937;
+  --ink-soft:  #4b5563;
+  --line:      #e5e7eb;
+  --surface:   #ffffff;
+  --bg:        #f8faf8;
+
+  --high-bg:   #fee2e2;  --high-fg:   #991b1b;  --high-bar:   #dc2626;
+  --med-bg:    #fef3c7;  --med-fg:    #92400e;  --med-bar:    #f59e0b;
+  --norm-bg:   #dcfce7;  --norm-fg:   #166534;  --norm-bar:   #16a34a;
+
+  --radius:    16px;
+  --radius-sm: 10px;
+  --shadow:    0 2px 4px rgba(20, 83, 45, 0.05), 0 8px 24px rgba(20, 83, 45, 0.08);
+  --shadow-hover: 0 4px 8px rgba(20, 83, 45, 0.08), 0 14px 32px rgba(20, 83, 45, 0.14);
+  --header-h:  64px;
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 8px);
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { line-height: 1.2; margin: 0 0 0.5rem; color: var(--green-900); }
+p { margin: 0 0 1rem; }
+a { color: var(--green-700); }
+
+.container {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--green-600);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 8px;
+  top: -48px;
+  background: var(--green-900);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  z-index: 200;
+  transition: top 0.2s;
+}
+.skip-link:focus { top: 8px; }
+
+/* ---------- Header / nav ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: var(--header-h);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-wrap {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--green-900);
+  text-decoration: none;
+}
+.brand-icon { font-size: 1.4rem; }
+
+.nav-toggle {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.nav-toggle span {
+  display: block;
+  height: 2px;
+  background: var(--green-900);
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.25s;
+}
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.site-nav {
+  position: absolute;
+  top: var(--header-h);
+  left: 0;
+  right: 0;
+  display: none;
+  flex-direction: column;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  padding: 8px 16px 16px;
+}
+.site-nav.open { display: flex; }
+
+.site-nav a {
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-weight: 500;
+  color: var(--ink);
+  transition: background 0.2s, color 0.2s;
+}
+.site-nav a:hover { background: var(--green-50); color: var(--green-700); }
+.site-nav a.active { background: var(--green-100); color: var(--green-900); }
+
+/* ---------- Hero ---------- */
+.hero {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(187, 247, 208, 0.7), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(134, 239, 172, 0.45), transparent 40%),
+    linear-gradient(180deg, var(--green-50), #ffffff);
+  padding: 56px 0 64px;
+  text-align: center;
+}
+.hero-inner { max-width: 760px; }
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 6px 14px;
+  background: var(--green-100);
+  color: var(--green-900);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: 999px;
+}
+.hero h1 { font-size: 2rem; margin-bottom: 14px; }
+.hero h1 .accent { color: var(--green-600); }
+.hero-sub { font-size: 1.05rem; color: var(--ink-soft); margin-bottom: 26px; }
+.hero-actions { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font: inherit;
+  font-weight: 600;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.2s, background 0.2s, color 0.2s;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+.btn-primary { background: var(--green-700); color: #fff; box-shadow: 0 6px 16px rgba(21, 128, 61, 0.28); }
+.btn-primary:hover { background: var(--green-900); }
+.btn-secondary { background: #fff; color: var(--green-900); border-color: var(--green-600); }
+.btn-secondary:hover { background: var(--green-50); }
+
+/* ---------- Sections ---------- */
+.section { padding: 48px 0; }
+.section-alt { background: var(--green-50); }
+.section-head { margin-bottom: 24px; }
+.section-head h2 { font-size: 1.6rem; }
+.section-head p { color: var(--ink-soft); margin: 0; }
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.form-card { padding: 20px; margin-bottom: 28px; }
+
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* ---------- Forms ---------- */
+.form-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 16px; }
+.field { margin-bottom: 16px; border: 0; padding: 0; min-width: 0; }
+.form-grid .field { margin-bottom: 0; }
+
+label, legend { display: block; font-weight: 600; font-size: 0.92rem; margin-bottom: 6px; padding: 0; }
+.optional { font-weight: 400; color: var(--ink-soft); }
+
+input[type="text"], select, textarea {
+  width: 100%;
+  padding: 12px 14px;
+  font: inherit;
+  color: var(--ink);
+  background: #fff;
+  border: 1.5px solid #cbd5d1;
+  border-radius: var(--radius-sm);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+textarea { resize: vertical; min-height: 88px; }
+input[type="text"]:hover, select:hover, textarea:hover { border-color: var(--green-600); }
+input[type="text"]:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--green-600);
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.25);
+}
+[aria-invalid="true"] { border-color: var(--high-bar) !important; }
+
+.error { color: var(--high-fg); font-size: 0.85rem; font-weight: 500; margin: 6px 0 0; }
+.error[hidden] { display: none; }
+
+/* Radio cards */
+.radio-cards { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.radio-card { position: relative; margin: 0; cursor: pointer; }
+.radio-card input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+.radio-card span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 16px;
+  border: 1.5px solid #cbd5d1;
+  border-radius: var(--radius-sm);
+  background: #fff;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+.radio-card small { color: var(--ink-soft); font-size: 0.8rem; }
+.radio-card:hover span { border-color: var(--green-600); transform: translateY(-1px); }
+.radio-card input:checked + span {
+  border-color: var(--green-600);
+  background: var(--green-50);
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.22);
+}
+.radio-card input:focus-visible + span { outline: 3px solid var(--green-600); outline-offset: 2px; }
+
+.form-actions { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
+.form-status { margin: 0; font-weight: 500; min-height: 1.4em; }
+.form-status.ok { color: var(--norm-fg); }
+
+/* ---------- Toolbar (filters / sort) ---------- */
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 8px 16px;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ink);
+  background: #fff;
+  border: 1.5px solid #cbd5d1;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.chip:hover { border-color: var(--green-600); }
+.chip.is-active { background: var(--green-700); border-color: var(--green-700); color: #fff; }
+.count { margin: 0; color: var(--ink-soft); font-size: 0.9rem; }
+
+/* ---------- Report cards ---------- */
+.report-card {
+  position: relative;
+  padding: 18px 18px 18px 22px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.report-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 6px;
+  background: var(--norm-bar);
+}
+.report-card.p-high::before   { background: var(--high-bar); }
+.report-card.p-medium::before { background: var(--med-bar); }
+.report-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+.card-title { font-size: 1.05rem; margin: 0; }
+.card-meta { color: var(--ink-soft); font-size: 0.88rem; margin: 0 0 6px; }
+.card-text { margin: 0 0 10px; color: var(--ink); font-size: 0.95rem; word-wrap: break-word; overflow-wrap: anywhere; }
+.card-time { color: var(--ink-soft); font-size: 0.8rem; margin: 0; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 4px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  border-radius: 999px;
+}
+.badge::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.badge-high   { background: var(--high-bg); color: var(--high-fg); }
+.badge-medium { background: var(--med-bg);  color: var(--med-fg); }
+.badge-normal { background: var(--norm-bg); color: var(--norm-fg); }
+
+/* ---------- Idea cards ---------- */
+.idea-card {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.idea-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+.idea-card .card-text { flex: 1; }
+
+.tag {
+  display: inline-block;
+  align-self: flex-start;
+  margin-bottom: 10px;
+  padding: 3px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--green-100);
+  color: var(--green-900);
+  border-radius: 999px;
+}
+
+.idea-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.upvote-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--green-900);
+  background: #fff;
+  border: 1.5px solid var(--green-600);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+}
+.upvote-btn:hover { background: var(--green-50); transform: translateY(-1px); }
+.upvote-btn.is-voted {
+  background: var(--green-700);
+  border-color: var(--green-700);
+  color: #fff;
+  cursor: default;
+}
+.upvote-btn.is-voted:hover { transform: none; background: var(--green-700); }
+.upvote-btn.pop { animation: pop 0.35s ease; }
+@keyframes pop { 50% { transform: scale(1.12); } }
+
+/* ---------- Empty state ---------- */
+.empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--ink-soft);
+  background: #fff;
+  border: 1.5px dashed #cbd5d1;
+  border-radius: var(--radius);
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  background: var(--green-900);
+  color: #ecfdf5;
+  padding: 28px 0;
+  text-align: center;
+}
+.site-footer p { margin: 0 0 4px; }
+.footer-credit { font-size: 0.88rem; color: #bbf7d0; }
+
+/* ---------- Tablet (640px+) ---------- */
+@media (min-width: 640px) {
+  .hero { padding: 80px 0 88px; }
+  .hero h1 { font-size: 2.6rem; }
+  .hero-actions { flex-direction: row; justify-content: center; }
+  .section { padding: 64px 0; }
+  .section-head h2 { font-size: 1.9rem; }
+  .form-card { padding: 28px; }
+  .form-grid { grid-template-columns: repeat(3, 1fr); }
+  .form-grid-2 { grid-template-columns: 2fr 1fr; }
+  .radio-cards { grid-template-columns: repeat(2, 1fr); }
+  .card-grid { grid-template-columns: repeat(2, 1fr); }
+  .form-actions { flex-direction: row; align-items: center; }
+  .toolbar { flex-direction: row; align-items: center; justify-content: space-between; }
+}
+
+/* ---------- Desktop (960px+) ---------- */
+@media (min-width: 960px) {
+  .nav-toggle { display: none; }
+  .site-nav {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+  .site-nav a { padding: 8px 16px; }
+  .hero h1 { font-size: 3.1rem; }
+  .radio-cards { grid-template-columns: repeat(4, 1fr); }
+  .card-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============ HEADER / NAV ============ -->
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a href="#home" class="brand" aria-label="Clean Campus home">
+        <span class="brand-icon" aria-hidden="true">🌿</span>
+        <span class="brand-text">Clean Campus</span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" type="button"
+              aria-expanded="false" aria-controls="siteNav" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav id="siteNav" class="site-nav" aria-label="Main navigation">
+        <a href="#report">Report Issue</a>
+        <a href="#reports">Reports</a>
+        <a href="#ideas">Green Ideas</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ 1. HERO ============ -->
+    <section id="home" class="hero">
+      <div class="container hero-inner">
+        <p class="eyebrow">Lovely Professional University</p>
+        <h1>Clean Campus &amp; Green Audit <span class="accent">Suggestion Box</span></h1>
+        <p class="hero-sub">Report cleanliness problems in seconds and help the campus go green with ideas the whole community votes on.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#report">Report an Issue</a>
+          <a class="btn btn-secondary" href="#ideas">Share a Green Idea</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 2. QUICK CLEANLINESS REPORT FORM ============ -->
+    <section id="report" class="section">
+      <div class="container">
+        <header class="section-head">
+          <h2>Quick Cleanliness Report</h2>
+          <p>Spotted something? Tell housekeeping where and what. It takes under 30 seconds.</p>
+        </header>
+
+        <form id="reportForm" class="card form-card" novalidate>
+          <div class="form-grid">
+            <div class="field">
+              <label for="block">Block</label>
+              <select id="block" name="block" required aria-describedby="err-block">
+                <option value="">Select block</option>
+                <option>Block 1</option>
+                <option>Block 2</option>
+                <option>Block 3</option>
+                <option>Block 4</option>
+                <option>Block 5</option>
+              </select>
+              <p class="error" id="err-block" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="floor">Floor</label>
+              <select id="floor" name="floor" required aria-describedby="err-floor">
+                <option value="">Select floor</option>
+                <option value="Ground">Ground</option>
+                <option value="1st">1st</option>
+                <option value="2nd">2nd</option>
+                <option value="3rd">3rd</option>
+                <option value="4th">4th</option>
+                <option value="5th">5th</option>
+              </select>
+              <p class="error" id="err-floor" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="area">Area</label>
+              <select id="area" name="area" required aria-describedby="err-area">
+                <option value="">Select area</option>
+                <option>Washroom</option>
+                <option>Ground</option>
+              </select>
+              <p class="error" id="err-area" hidden></p>
+            </div>
+          </div>
+
+          <fieldset class="field" aria-describedby="err-category">
+            <legend>Issue category</legend>
+            <div class="radio-cards">
+              <label class="radio-card">
+                <input type="radio" name="category" value="Garbage Overflow">
+                <span><strong>🗑️ Garbage Overflow</strong><small>Medium priority</small></span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="category" value="Water Leak">
+                <span><strong>💧 Water Leak</strong><small>High priority</small></span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="category" value="Dirty Washroom">
+                <span><strong>🚽 Dirty Washroom</strong><small>Medium priority</small></span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="category" value="Lights Left On">
+                <span><strong>💡 Lights Left On</strong><small>Normal priority</small></span>
+              </label>
+            </div>
+            <p class="error" id="err-category" hidden></p>
+          </fieldset>
+
+          <div class="field">
+            <label for="description">Description <span class="optional">(optional)</span></label>
+            <textarea id="description" name="description" rows="3" maxlength="300"
+                      placeholder="Add any detail that helps, e.g. near the main staircase"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Submit Report</button>
+            <p class="form-status" id="reportStatus" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ============ 3. REPORTS LIST (HOUSEKEEPING) ============ -->
+    <section id="reports" class="section section-alt">
+      <div class="container">
+        <header class="section-head">
+          <h2>Housekeeping Reports</h2>
+          <p>Reports are sorted by priority so the most urgent issues appear first.</p>
+        </header>
+
+        <div class="toolbar">
+          <div class="chip-group" role="group" aria-label="Filter reports by priority">
+            <button type="button" class="chip is-active" data-filter="All" aria-pressed="true">All</button>
+            <button type="button" class="chip" data-filter="High" aria-pressed="false">High</button>
+            <button type="button" class="chip" data-filter="Medium" aria-pressed="false">Medium</button>
+            <button type="button" class="chip" data-filter="Normal" aria-pressed="false">Normal</button>
+          </div>
+          <p class="count" id="reportCount" aria-live="polite"></p>
+        </div>
+
+        <div id="reportList" class="card-grid"></div>
+      </div>
+    </section>
+
+    <!-- ============ 4 & 5. GREEN IDEAS BOARD + UPVOTING ============ -->
+    <section id="ideas" class="section">
+      <div class="container">
+        <header class="section-head">
+          <h2>Green Campus Ideas Board</h2>
+          <p>Propose eco-friendly ideas and upvote the ones you want to see happen.</p>
+        </header>
+
+        <form id="ideaForm" class="card form-card" novalidate>
+          <div class="form-grid form-grid-2">
+            <div class="field">
+              <label for="ideaTitle">Idea title</label>
+              <input type="text" id="ideaTitle" name="title" maxlength="80"
+                     placeholder="e.g. Solar-powered bus stops" aria-describedby="err-title">
+              <p class="error" id="err-title" hidden></p>
+            </div>
+
+            <div class="field">
+              <label for="ideaCategory">Category</label>
+              <select id="ideaCategory" name="category" aria-describedby="err-idea-category">
+                <option value="">Select category</option>
+                <option>Energy</option>
+                <option>Waste</option>
+                <option>Water</option>
+                <option>Greenery</option>
+                <option>Other</option>
+              </select>
+              <p class="error" id="err-idea-category" hidden></p>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="ideaDesc">Description</label>
+            <textarea id="ideaDesc" name="description" rows="3" maxlength="400"
+                      placeholder="Explain your idea and how it helps the campus" aria-describedby="err-desc"></textarea>
+            <p class="error" id="err-desc" hidden></p>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Share Idea</button>
+            <p class="form-status" id="ideaStatus" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+
+        <div class="toolbar">
+          <div class="chip-group" role="group" aria-label="Sort ideas">
+            <button type="button" class="chip is-active" data-sort="top" aria-pressed="true">Top Voted</button>
+            <button type="button" class="chip" data-sort="new" aria-pressed="false">Newest</button>
+          </div>
+          <p class="count" id="ideaCount" aria-live="polite"></p>
+        </div>
+
+        <div id="ideaGrid" class="card-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ 6. FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p><strong>Clean Campus &amp; Green Audit Suggestion Box</strong> · LPU</p>
+      <!-- Edit the team credit below -->
+      <p class="footer-credit">Built by Bali Sateesh, Bethu Nishanth &amp; Gopu Venkata Trinadha Swamy · 2026</p>
+    </div>
+  </footer>
+</body>
+</html>
